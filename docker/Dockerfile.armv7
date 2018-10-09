@@ -6,20 +6,21 @@ ENV    DEBIAN_FRONTEND noninteractive
 VOLUME ["/config"]
 
 RUN apt-get update \
- && apt-get install -y curl python3 \
+ && apt-get install -y build-essential curl python3-dev \
  && apt-get clean \
  && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
  && python3 get-pip.py \
  && rm get-pip.py \
  && pip install Django \
- && groupadd -g 999 web \
- && useradd -r -u 999 -g web web
+ && pip install uwsgi \
+ && groupadd -g 999 django \
+ && useradd -r -u 999 -g django django
 
 # Add dynamic dns script
-ADD webserver /opt/webserver
-RUN chmod +x /opt/webserver/bin/run.sh \
- && ln -s /opt/webserver/bin/run.sh /
+ADD django /opt/django
+RUN chmod +x /opt/django/bin/run.sh \
+ && ln -s /opt/django/bin/run.sh /
 
-USER web
+USER django
 
 ENTRYPOINT ["/run.sh"]
