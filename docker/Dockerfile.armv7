@@ -1,4 +1,4 @@
-FROM   resin/rpi-raspbian
+FROM   balenalib/raspberrypi3
 
 # Make sure we don't get notifications we can't answer during building.
 ENV    DEBIAN_FRONTEND noninteractive
